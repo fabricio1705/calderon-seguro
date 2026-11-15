@@ -1,0 +1,267 @@
+<!-- Encabezado -->
+<div class="page-header">
+  <div class="page-title">
+    <div class="page-title-icon"><app-icon name="megaphone" [size]="28" /></div>
+    <div>
+      <h1>Reportar incidente</h1>
+      <p>Tu reporte nos ayuda a mantener una comunidad más segura</p>
+    </div>
+  </div>
+
+  <div class="card location-card">
+    <span class="location-icon"><app-icon name="map-pin" [size]="22" /></span>
+    <div>
+      <strong>Comunidad Calderón</strong>
+      <span>Parroquia Abdón Calderón, Portoviejo, Manabí</span>
+    </div>
+  </div>
+</div>
+
+@if (paso() === 'formulario') {
+<!-- Formulario en dos columnas -->
+<div class="card form-card">
+  <div class="form-grid">
+    <!-- Columna izquierda -->
+    <div class="col">
+      <section class="step">
+        <h2 class="step-title"><span class="step-num">1</span> Categoría del incidente</h2>
+        <div class="categories">
+          @for (c of categorias; track c.id) {
+            <button type="button" class="category" [class.selected]="categoria() === c.id"
+              [style.--color-cat]="c.color" [style.--fondo-cat]="c.fondo"
+              [attr.aria-pressed]="categoria() === c.id" (click)="categoria.set(c.id)">
+              <span class="category-icon"><app-icon [name]="c.icono" [size]="24" /></span>
+              <span class="category-name">{{ c.nombre }}</span>
+              @if (categoria() === c.id) {
+                <span class="category-check"><app-icon name="check-circle" [size]="18" /></span>
+              }
+            </button>
+          }
+        </div>
+      </section>
+
+      <section class="step">
+        <h2 class="step-title"><span class="step-num">2</span> Fecha y hora del incidente</h2>
+        <div class="two-fields">
+          <div>
+            <label class="field-label" for="fecha">Fecha</label>
+            <div class="input-icon">
+              <app-icon name="calendar" [size]="18" />
+              <input id="fecha" class="input" type="date" [(ngModel)]="fecha" />
+            </div>
+          </div>
+          <div>
+            <label class="field-label" for="hora">Hora</label>
+            <div class="input-icon">
+              <app-icon name="clock" [size]="18" />
+              <input id="hora" class="input" type="time" [(ngModel)]="hora" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2 class="step-title"><span class="step-num">3</span> Descripción del incidente</h2>
+        <textarea class="input textarea" rows="6" [maxlength]="maxDescripcion" [(ngModel)]="descripcion"
+          placeholder="Describe lo que sucedió con la mayor cantidad de detalles posibles..."
+          aria-label="Descripción del incidente"></textarea>
+        <div class="counter" [class.near-limit]="descripcion().length >= maxDescripcion - 50">
+          {{ descripcion().length }}/{{ maxDescripcion }}
+        </div>
+      </section>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col">
+      <section class="step">
+        <h2 class="step-title"><span class="step-num">4</span> Ubicación del incidente</h2>
+        <!-- Mapa incrustado de Google Maps (solo visualización, sin API ni GPS) -->
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15956.687031597903!2d-80.34976820356343!3d-1.0315069832673731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b91c3a2028857%3A0x4d9d08ca52afb7df!2sAbd%C3%B3n%20Calder%C3%B3n%2C%20Portoviejo!5e0!3m2!1ses-419!2sec!4v1791755719598!5m2!1ses-419!2sec" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <p class="hint">Mapa de referencia de Abdón Calderón, Portoviejo.</p>
+
+        <button type="button" class="btn btn-soft full" (click)="usarMiUbicacion()">
+          <app-icon name="navigation" [size]="18" /> Usar mi ubicación actual
+        </button>
+
+        <label class="field-label spaced" for="direccion">Dirección o referencia del lugar (opcional)</label>
+        <div class="input-icon">
+          <app-icon name="map-pin" [size]="18" />
+          <input id="direccion" class="input" type="text" [(ngModel)]="direccion"
+            placeholder="Ej.: frente a la iglesia, junto a la tienda..." />
+        </div>
+      </section>
+
+      <section class="step">
+        <h2 class="step-title"><span class="step-num">5</span> Agregar fotos <small>(opcional)</small></h2>
+
+        <label class="dropzone" [class.dragging]="arrastrando()" (dragover)="alArrastrar($event)"
+          (dragleave)="arrastrando.set(false)" (drop)="alSoltar($event)">
+          <input type="file" accept="image/jpeg,image/png" multiple (change)="alSeleccionarArchivos($event)" />
+          <span class="dropzone-icon"><app-icon name="camera" [size]="26" /></span>
+          <strong>Arrastra tus fotos aquí o <span class="link">selecciónalas</span></strong>
+          <small>Formatos permitidos: JPG, PNG · Tamaño máximo: {{ maxTamanoMb }} MB por foto · Hasta {{ maxFotos }} fotos</small>
+        </label>
+
+        @if (fotos().length > 0) {
+          <div class="previews">
+            @for (foto of fotos(); track foto.url; let i = $index) {
+              <figure class="preview">
+                <img [src]="foto.url" [alt]="foto.nombre" />
+                <button type="button" aria-label="Quitar foto" (click)="quitarFoto(i)">
+                  <app-icon name="x" [size]="14" />
+                </button>
+              </figure>
+            }
+          </div>
+          <p class="hint">Vista previa temporal: las fotos no se suben ni se guardan.</p>
+        }
+      </section>
+    </div>
+  </div>
+
+  <!-- Botones inferiores -->
+  <div class="form-footer">
+    <span class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: no se envían datos.</span>
+    <div class="footer-buttons">
+      <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="siguiente()">
+        Siguiente <app-icon name="arrow-right" [size]="18" />
+      </button>
+    </div>
+  </div>
+</div>
+} @else {
+<!-- Revisión del reporte antes de continuar -->
+<div class="card form-card">
+  <div class="review-head">
+    <h2 class="step-title"><span class="step-num"><app-icon name="check-circle" [size]="16" /></span> Revisa tu reporte</h2>
+    <p class="review-sub">Comprueba que la información sea correcta. Puedes volver al formulario para corregir cualquier dato.</p>
+  </div>
+
+  <div class="review-grid">
+    <section class="review-item">
+      <span class="review-label">Tipo de incidente</span>
+      @if (categoriaSeleccionada(); as c) {
+        <div class="review-category" [style.--color-cat]="c.color" [style.--fondo-cat]="c.fondo">
+          <span class="category-icon"><app-icon [name]="c.icono" [size]="22" /></span>
+          <strong>{{ c.nombre }}</strong>
+        </div>
+      } @else {
+        <span class="review-empty">No seleccionaste una categoría.</span>
+      }
+    </section>
+
+    <section class="review-item">
+      <span class="review-label">Fecha y hora</span>
+      <p class="review-row">
+        <app-icon name="calendar" [size]="17" />
+        @if (fechaLegible(); as f) {
+          <span class="capitalize">{{ f }}</span>
+        } @else {
+          <span class="review-empty">Sin fecha indicada</span>
+        }
+      </p>
+      <p class="review-row">
+        <app-icon name="clock" [size]="17" />
+        @if (hora()) {
+          <span>{{ hora() }}</span>
+        } @else {
+          <span class="review-empty">Sin hora indicada</span>
+        }
+      </p>
+    </section>
+
+    <section class="review-item wide">
+      <span class="review-label">Descripción del incidente</span>
+      @if (descripcion().trim()) {
+        <p class="review-text">{{ descripcion().trim() }}</p>
+      } @else {
+        <span class="review-empty">No escribiste una descripción.</span>
+      }
+    </section>
+
+    <section class="review-item wide">
+      <span class="review-label">Ubicación</span>
+      <p class="review-row">
+        <app-icon name="map-pin" [size]="17" />
+        <span><strong>Comunidad Calderón</strong> · Parroquia Abdón Calderón, Portoviejo, Manabí</span>
+      </p>
+      <p class="review-row">
+        <app-icon name="navigation" [size]="17" />
+        @if (direccion().trim()) {
+          <span>{{ direccion().trim() }}</span>
+        } @else {
+          <span class="review-empty">Sin dirección o referencia adicional.</span>
+        }
+      </p>
+    </section>
+
+    <section class="review-item wide">
+      <span class="review-label">Fotografías adjuntas ({{ fotos().length }})</span>
+      @if (fotos().length > 0) {
+        <div class="previews">
+          @for (foto of fotos(); track foto.url) {
+            <figure class="preview">
+              <img [src]="foto.url" [alt]="foto.nombre" />
+            </figure>
+          }
+        </div>
+      } @else {
+        <span class="review-empty">No adjuntaste fotografías.</span>
+      }
+    </section>
+  </div>
+
+  <div class="form-footer">
+    <span class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: el reporte no se registra ni se envía.</span>
+    <div class="footer-buttons">
+      <button type="button" class="btn btn-outline" (click)="editarReporte()">
+        <app-icon name="arrow-left" [size]="18" /> Editar reporte
+      </button>
+      <button type="button" class="btn btn-primary" (click)="continuarDesdeRevision()">
+        Siguiente <app-icon name="arrow-right" [size]="18" />
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Aviso: la función todavía no está disponible -->
+@if (mostrarNoDisponible()) {
+  <div class="modal-backdrop" (click)="mostrarNoDisponible.set(false)">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="no-disponible-titulo" (click)="$event.stopPropagation()">
+      <span class="modal-icon"><app-icon name="info" [size]="24" /></span>
+      <div class="modal-header">
+        <h2 id="no-disponible-titulo">Función no disponible</h2>
+        <button type="button" class="icon-close" aria-label="Cerrar" (click)="mostrarNoDisponible.set(false)">
+          <app-icon name="x" />
+        </button>
+      </div>
+      <p class="modal-texto">Esta función todavía no está disponible. Actualmente, Calderón Seguro se encuentra en una etapa de demostración.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" (click)="mostrarNoDisponible.set(false)">Entendido</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Confirmación para limpiar el formulario -->
+@if (confirmarCancelar()) {
+  <div class="modal-backdrop" (click)="confirmarCancelar.set(false)">
+    <div class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>¿Limpiar el formulario?</h2>
+        <button type="button" class="icon-close" aria-label="Cerrar" (click)="confirmarCancelar.set(false)">
+          <app-icon name="x" />
+        </button>
+      </div>
+      <p>Se borrará la información que has escrito en esta pantalla.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" (click)="confirmarCancelar.set(false)">Seguir editando</button>
+        <button type="button" class="btn btn-primary" (click)="limpiarFormulario()">Sí, limpiar</button>
+      </div>
+    </div>
+  </div>
+}

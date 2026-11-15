@@ -1,0 +1,399 @@
+/* Estilos globales de Calderón Seguro */
+:root {
+  --azul-oscuro: #0b1f4d;
+  --azul-oscuro-2: #0a1a3f;
+  --azul-titulo: #0f2557;
+  --azul: #1d6cf2;
+  --azul-hover: #1559d1;
+  --azul-claro: #e8f0fe;
+  --fondo: #eef2f8;
+  --blanco: #ffffff;
+  --texto: #1e293b;
+  --texto-suave: #64748b;
+  --borde: #e2e8f0;
+  --sombra: 0 1px 3px rgba(15, 37, 87, 0.06), 0 6px 20px rgba(15, 37, 87, 0.06);
+  --radio: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--azul-titulo);
+  margin: 0;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--azul);
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ---------- Tarjetas ---------- */
+.card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+/* ---------- Encabezado de página ---------- */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-title-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--azul-claro);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+}
+
+.page-title h1 {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.page-title p {
+  color: var(--texto-suave);
+  margin-top: 2px;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--azul);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(29, 108, 242, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--azul-hover);
+}
+
+.btn-outline {
+  background: #fff;
+  color: var(--azul-titulo);
+  border-color: #cbd5e1;
+}
+
+.btn-outline:hover {
+  border-color: var(--azul);
+  color: var(--azul);
+}
+
+.btn-soft {
+  background: var(--azul-claro);
+  color: var(--azul);
+}
+
+.btn-soft:hover {
+  background: #d6e4fd;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13.5px;
+  border-radius: 8px;
+}
+
+/* ---------- Campos de formulario ---------- */
+.field-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--azul-titulo);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--texto);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px rgba(29, 108, 242, 0.15);
+}
+
+.input:disabled,
+.input[readonly] {
+  background: #f8fafc;
+  color: #334155;
+}
+
+/* ---------- Etiquetas de estado ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge-pendiente {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.badge-revision {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-atendido {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-cerrado {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ---------- Aviso discreto de datos de ejemplo ---------- */
+.demo-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--texto-suave);
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+/* ---------- Estado vacío (sin registros) ---------- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--texto-suave);
+  font-size: 13.5px;
+}
+
+.empty-state strong {
+  color: var(--azul-titulo);
+  font-size: 15px;
+}
+
+.empty-state-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+}
+
+/* ---------- Ventanas emergentes ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 26, 63, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 100;
+  animation: aparecer 0.15s ease-out;
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 20px 50px rgba(10, 26, 63, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+/* Icono circular en la parte superior de una ventana */
+.modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+}
+
+.modal-icon.peligro {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.modal-texto {
+  color: var(--texto);
+}
+
+.modal-texto + .modal-texto {
+  margin-top: 12px;
+}
+
+.modal-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.modal-aviso app-icon {
+  margin-top: 1px;
+}
+
+.icon-close {
+  border: none;
+  background: transparent;
+  color: var(--texto-suave);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.icon-close:hover {
+  background: #f1f5f9;
+  color: var(--azul-titulo);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title-icon {
+    width: 48px;
+    height: 48px;
+  }
+}

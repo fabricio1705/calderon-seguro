@@ -1,0 +1,174 @@
+:host {
+  display: block;
+  height: 320px;
+}
+
+.mapa {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  background: #eaf0e4;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+svg.marcable {
+  cursor: crosshair;
+}
+
+.marcador {
+  cursor: pointer;
+}
+
+.marcador:hover path {
+  filter: brightness(1.1);
+}
+
+.pulso {
+  fill: rgba(29, 108, 242, 0.25);
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pulso 1.8s ease-out infinite;
+}
+
+@keyframes pulso {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Textos del dibujo con borde blanco para que se lean sobre el fondo */
+.etiqueta-lugar,
+.etiqueta-ciudad,
+.etiqueta-chica,
+.etiqueta-via,
+.etiqueta-rio {
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.etiqueta-lugar {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  fill: var(--azul-titulo);
+  stroke-width: 5px;
+}
+
+.etiqueta-ciudad {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  fill: #475569;
+  stroke-width: 4px;
+}
+
+.etiqueta-chica {
+  font-size: 9px;
+  fill: #4d7c3a;
+  stroke-width: 3px;
+}
+
+.etiqueta-via {
+  font-size: 10px;
+  fill: #64748b;
+  stroke-width: 3px;
+  dominant-baseline: middle;
+}
+
+.etiqueta-rio {
+  font-size: 11px;
+  font-style: italic;
+  fill: #2f78b5;
+  stroke-width: 3px;
+  dominant-baseline: middle;
+}
+
+/* Controles */
+.controles {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(15, 37, 87, 0.15);
+  overflow: hidden;
+}
+
+.controles button,
+.control-ubicar {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #fff;
+  color: var(--azul-titulo);
+  display: grid;
+  place-items: center;
+}
+
+.controles button + button {
+  border-top: 1px solid var(--borde);
+}
+
+.controles button:hover:not(:disabled),
+.control-ubicar:hover {
+  background: var(--azul-claro);
+  color: var(--azul);
+}
+
+.controles button:disabled {
+  color: #cbd5e1;
+  cursor: default;
+}
+
+.control-ubicar {
+  position: absolute;
+  top: 94px;
+  right: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(15, 37, 87, 0.15);
+}
+
+.nota-mapa {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  font-size: 11.5px;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.norte {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--azul-titulo);
+  font-size: 12px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 4px rgba(15, 37, 87, 0.15);
+}

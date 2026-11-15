@@ -1,0 +1,99 @@
+<div class="page-header">
+  <div class="page-title">
+    <div class="page-title-icon"><app-icon name="file-text" [size]="28" /></div>
+    <div>
+      <h1>Mis reportes</h1>
+      <p>Consulta los reportes que has realizado y su estado</p>
+    </div>
+  </div>
+  <a class="btn btn-primary" routerLink="/reportar"><app-icon name="megaphone" [size]="18" /> Reportar incidente</a>
+</div>
+
+<div class="card table-card">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Categoría</th>
+        <th>Fecha</th>
+        <th>Ubicación aproximada</th>
+        <th>Estado</th>
+        <th><span class="sr-only">Acciones</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of reportes; track r.codigo) {
+        <tr>
+          <td data-label="Código"><span class="code">{{ r.codigo }}</span></td>
+          <td data-label="Categoría">
+            <span class="category"><span class="category-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="17" /></span>{{ r.categoria }}</span>
+          </td>
+          <td data-label="Fecha">{{ r.fecha }} <small>{{ r.hora }}</small></td>
+          <td data-label="Ubicación">{{ r.ubicacion }}</td>
+          <td data-label="Estado"><span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span></td>
+          <td class="actions">
+            <button type="button" class="btn btn-soft btn-sm" (click)="detalle.set(r)">
+              <app-icon name="eye" [size]="16" /> Ver detalles
+            </button>
+          </td>
+        </tr>
+      } @empty {
+        <tr class="fila-vacia">
+          <td colspan="6">
+            <div class="empty-state">
+              <span class="empty-state-icon"><app-icon name="file-text" [size]="26" /></span>
+              <strong>Aún no has registrado reportes</strong>
+              <span>Cuando reportes un incidente, podrás consultar aquí su estado.</span>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="table-footer">
+    <span class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra reportes reales.</span>
+    <span class="legend">
+      <span class="badge badge-pendiente">Pendiente</span>
+      <span class="badge badge-revision">En revisión</span>
+      <span class="badge badge-atendido">Atendido</span>
+      <span class="badge badge-cerrado">Cerrado</span>
+    </span>
+  </div>
+</div>
+
+<!-- Detalles simulados -->
+@if (detalle(); as r) {
+  <div class="modal-backdrop" (click)="detalle.set(null)">
+    <div class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="detail-title">
+          <span class="detail-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="22" /></span>
+          <div>
+            <small>{{ r.codigo }}</small>
+            <h2>{{ r.categoria }}</h2>
+          </div>
+        </div>
+        <button type="button" class="icon-close" aria-label="Cerrar" (click)="detalle.set(null)">
+          <app-icon name="x" />
+        </button>
+      </div>
+
+      <dl class="detail-list">
+        <div><dt>Estado ilustrativo</dt><dd><span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span></dd></div>
+        <div><dt>Fecha y hora</dt><dd>{{ r.fecha }} · {{ r.hora }}</dd></div>
+        <div><dt>Ubicación aproximada</dt><dd>{{ r.ubicacion }}</dd></div>
+        <div><dt>Comunidad</dt><dd>Abdón Calderón, Portoviejo</dd></div>
+      </dl>
+
+      <h3 class="detail-subtitle">Descripción</h3>
+      <p class="detail-text">{{ r.descripcion }}</p>
+
+      <p class="demo-note spaced"><app-icon name="info" [size]="16" /> Reporte de solo lectura. No puede modificarse en esta versión.</p>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" (click)="detalle.set(null)">Cerrar</button>
+      </div>
+    </div>
+  </div>
+}

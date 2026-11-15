@@ -1,0 +1,52 @@
+<div class="login-page">
+  <section class="card login-card">
+    <div class="brand">
+      <div class="brand-logo"><app-icon name="shield-check" [size]="30" /></div>
+      <div class="brand-text">
+        <strong>Calderón Seguro</strong>
+        <span>Tu seguridad, nuestra prioridad</span>
+      </div>
+    </div>
+
+    <h1>Bienvenido a Calderón Seguro</h1>
+    <p class="subtitle">Inicia sesión para acceder a la plataforma de seguridad ciudadana de la parroquia Abdón Calderón.</p>
+
+    <form class="login-form" (ngSubmit)="iniciarSesion()">
+      <div>
+        <label class="field-label" for="login-nombre">Nombre del usuario</label>
+        <div class="input-icon">
+          <app-icon name="user" [size]="18" />
+          <input id="login-nombre" name="nombre" class="input" type="text" maxlength="40" autocomplete="given-name"
+            placeholder="Ej.: Carlos" [(ngModel)]="nombre" />
+        </div>
+      </div>
+
+      <div>
+        <label class="field-label" for="login-correo">Correo electrónico</label>
+        <div class="input-icon">
+          <app-icon name="mail" [size]="18" />
+          <input id="login-correo" name="correo" class="input" type="email" autocomplete="email"
+            placeholder="nombre@correo.com" [(ngModel)]="correo" />
+        </div>
+      </div>
+
+      <div>
+        <label class="field-label" for="login-contrasena">Contraseña</label>
+        <div class="input-icon">
+          <app-icon name="lock" [size]="18" />
+          <input id="login-contrasena" name="contrasena" class="input" type="password" autocomplete="off"
+            placeholder="••••••••" [(ngModel)]="contrasena" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary full">
+        Iniciar sesión <app-icon name="arrow-right" [size]="18" />
+      </button>
+    </form>
+
+    <p class="demo-note">
+      <app-icon name="info" [size]="16" />
+      Prototipo de demostración: puedes ingresar cualquier dato. No se crean cuentas ni se guardan contraseñas.
+    </p>
+  </section>
+</div>

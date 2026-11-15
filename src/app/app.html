@@ -1,0 +1,168 @@
+<div class="layout" [class.contraida]="barraContraida()" [class.movil-abierto]="menuMovilAbierto()"
+  [class.sin-sesion]="!sesion.activa()">
+  @if (sesion.activa()) {
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><app-icon name="shield-check" [size]="26" /></div>
+        <div class="brand-text">
+          <strong>Calderón Seguro</strong>
+          <span>Tu seguridad, nuestra prioridad</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        @for (item of menu; track item.ruta) {
+          <a class="nav-link" [routerLink]="item.ruta" routerLinkActive="active" [attr.title]="item.etiqueta"
+            (click)="cerrarMenuMovil()">
+            <app-icon [name]="item.icono" />
+            <span>{{ item.etiqueta }}</span>
+          </a>
+        }
+      </nav>
+
+      <button type="button" class="nav-link logout" title="Cerrar sesión" (click)="cerrarSesion()">
+        <app-icon name="logout" />
+        <span>Cerrar sesión</span>
+      </button>
+    </aside>
+
+    <div class="overlay" (click)="cerrarMenuMovil()"></div>
+  }
+
+  <div class="main">
+    @if (sesion.activa()) {
+      <!-- Barra superior -->
+      <header class="topbar">
+        <button type="button" class="icon-btn" aria-label="Contraer o expandir el menú" (click)="alternarBarraLateral()">
+          <app-icon name="menu" [size]="22" />
+        </button>
+
+        <div class="topbar-right">
+          <!-- Acceso directo al ECU-911 (solo informativo) -->
+          <button type="button" class="ecu-btn" aria-label="Llamar al ECU-911" title="Llamar al ECU-911"
+            (click)="abrirEcu()">
+            <app-icon name="phone" [size]="17" />
+            <span class="ecu-texto-largo">Llamar al ECU-911</span>
+            <span class="ecu-texto-corto">ECU-911</span>
+          </button>
+
+          <div class="dropdown-wrap">
+            <button type="button" class="icon-btn" aria-label="Notificaciones" (click)="alternarNotificaciones($event)">
+              <app-icon name="bell" [size]="22" />
+              @if (notificaciones.length > 0) {
+                <span class="dot">{{ notificaciones.length }}</span>
+              }
+            </button>
+            @if (notificacionesAbiertas()) {
+              <div class="dropdown dropdown-notif" (click)="$event.stopPropagation()">
+                <div class="dropdown-title">Notificaciones</div>
+                @for (n of notificaciones; track n.titulo) {
+                  <div class="notif">
+                    <span class="notif-icon"><app-icon name="info" [size]="16" /></span>
+                    <div>
+                      <strong>{{ n.titulo }}</strong>
+                      <p>{{ n.texto }}</p>
+                      <small>{{ n.hace }}</small>
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="empty-state">
+                    <span class="empty-state-icon"><app-icon name="bell" [size]="22" /></span>
+                    <strong>No tienes notificaciones</strong>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="dropdown-wrap">
+            <button type="button" class="profile-btn" (click)="alternarMenuPerfil($event)">
+              <span class="avatar">{{ sesion.inicial() }}</span>
+              <span class="profile-name">{{ sesion.nombre() }}</span>
+              <app-icon name="chevron-down" [size]="16" />
+            </button>
+            @if (menuPerfilAbierto()) {
+              <div class="dropdown dropdown-profile">
+                <div class="dropdown-user">
+                  <span class="avatar">{{ sesion.inicial() }}</span>
+                  <div>
+                    <strong>{{ sesion.nombre() }}</strong>
+                    <small>Ciudadano · Usuario de prueba</small>
+                  </div>
+                </div>
+                <a class="dropdown-item" routerLink="/perfil" (click)="cerrarMenus()">
+                  <app-icon name="user" [size]="18" /> Mi perfil
+                </a>
+                <a class="dropdown-item" routerLink="/mis-reportes" (click)="cerrarMenus()">
+                  <app-icon name="file-text" [size]="18" /> Mis reportes
+                </a>
+                <button type="button" class="dropdown-item danger" (click)="cerrarSesion()">
+                  <app-icon name="logout" [size]="18" /> Cerrar sesión
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </header>
+    }
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+
+  <!-- Ventana del ECU-911: no realiza llamadas, solo informa -->
+  @if (ecuPaso(); as paso) {
+    <div class="modal-backdrop" (click)="cerrarEcu()">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ecu-titulo" (click)="$event.stopPropagation()">
+        @if (paso === 'confirmar') {
+          <span class="modal-icon peligro"><app-icon name="phone" [size]="24" /></span>
+          <div class="modal-header">
+            <h2 id="ecu-titulo">¿Estás seguro de que deseas llamar al ECU-911?</h2>
+            <button type="button" class="icon-close" aria-label="Cerrar" (click)="cerrarEcu()">
+              <app-icon name="x" />
+            </button>
+          </div>
+          <p class="modal-texto">
+            Este servicio está destinado exclusivamente a situaciones de emergencia reales y urgentes que requieran
+            atención inmediata.
+          </p>
+          <p class="modal-texto modal-aviso">
+            <app-icon name="alert-octagon" [size]="18" />
+            <span>No realices llamadas por pruebas, curiosidad o situaciones que no constituyan una emergencia.</span>
+          </p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" (click)="cerrarEcu()">Cancelar</button>
+            <button type="button" class="btn btn-danger" (click)="continuarEcu()">Sí, continuar</button>
+          </div>
+        } @else {
+          <span class="modal-icon"><app-icon name="info" [size]="24" /></span>
+          <div class="modal-header">
+            <h2 id="ecu-titulo">Función no disponible</h2>
+            <button type="button" class="icon-close" aria-label="Cerrar" (click)="cerrarEcu()">
+              <app-icon name="x" />
+            </button>
+          </div>
+          <p class="modal-texto">
+            La función de llamada al ECU-911 todavía no está disponible en esta versión de demostración de Calderón
+            Seguro. En caso de una emergencia real, utiliza los canales oficiales de emergencia disponibles en tu
+            localidad.
+          </p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-primary" (click)="cerrarEcu()">Entendido</button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Aviso de demostración -->
+  @if (aviso.mensaje(); as mensaje) {
+    <div class="toast" role="status">
+      <app-icon name="info" [size]="20" />
+      <span>{{ mensaje }}</span>
+      <button type="button" aria-label="Cerrar aviso" (click)="aviso.cerrar()"><app-icon name="x" [size]="16" /></button>
+    </div>
+  }
+</div>

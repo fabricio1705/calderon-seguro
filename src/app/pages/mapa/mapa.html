@@ -1,0 +1,64 @@
+<div class="page-header">
+  <div class="page-title">
+    <div class="page-title-icon"><app-icon name="map" [size]="28" /></div>
+    <div>
+      <h1>Mapa</h1>
+      <p>Incidentes registrados en la parroquia Abdón Calderón y sus alrededores</p>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="card map-card">
+    <!-- Mapa incrustado de Google Maps (solo visualización, sin API ni GPS) -->
+    <div class="mapa-grande">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15956.687031597903!2d-80.34976820356343!3d-1.0315069832673731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b91c3a2028857%3A0x4d9d08ca52afb7df!2sAbd%C3%B3n%20Calder%C3%B3n%2C%20Portoviejo!5e0!3m2!1ses-419!2sec!4v1791755719598!5m2!1ses-419!2sec" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="legend">
+      @for (e of estados; track e) {
+        <span><i [style.background]="colorEstado[e]"></i>{{ e }}</span>
+      }
+    </div>
+  </div>
+
+  <aside class="side">
+    @if (reporteSeleccionado(); as r) {
+      <div class="card selected">
+        <div class="selected-head">
+          <span class="selected-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="22" /></span>
+          <div>
+            <small>{{ r.codigo }}</small>
+            <h2>{{ r.categoria }}</h2>
+          </div>
+        </div>
+        <p class="selected-row"><app-icon name="map-pin" [size]="16" /> {{ r.ubicacion }}</p>
+        <p class="selected-row"><app-icon name="calendar" [size]="16" /> {{ r.fecha }} · {{ r.hora }}</p>
+        <p class="selected-desc">{{ r.descripcion }}</p>
+        <span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span>
+      </div>
+    }
+
+    <div class="card list">
+      <h3>Incidentes registrados</h3>
+      @for (r of reportes; track r.codigo) {
+        <button type="button" class="list-item" [class.active]="r.codigo === seleccionado()"
+          (click)="seleccionado.set(r.codigo)">
+          <i [style.background]="colorEstado[r.estado]"></i>
+          <span class="list-text">
+            <strong>{{ r.categoria }}</strong>
+            <small>{{ r.ubicacion }}</small>
+          </span>
+          <app-icon name="chevron-right" [size]="16" />
+        </button>
+      } @empty {
+        <div class="empty-state">
+          <span class="empty-state-icon"><app-icon name="map-pin" [size]="26" /></span>
+          <strong>No hay incidentes registrados</strong>
+          <span>Los incidentes reportados se mostrarán en esta lista.</span>
+        </div>
+      }
+    </div>
+
+    <p class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra incidentes reales.</p>
+  </aside>
+</div>

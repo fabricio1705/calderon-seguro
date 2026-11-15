@@ -1,0 +1,210 @@
+.table-card {
+  padding: 8px 0 0;
+  overflow: hidden;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th {
+  text-align: left;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--texto-suave);
+  font-weight: 600;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--borde);
+  vertical-align: middle;
+}
+
+.tabla tbody tr:hover {
+  background: #f8faff;
+}
+
+.tabla tbody tr.fila-vacia:hover {
+  background: none;
+}
+
+.tabla small {
+  color: var(--texto-suave);
+  margin-left: 4px;
+}
+
+.code {
+  font-family: Consolas, 'Courier New', monospace;
+  font-weight: 700;
+  color: var(--azul-titulo);
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--azul-titulo);
+}
+
+.category-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--azul-claro);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+}
+
+.actions {
+  text-align: right;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+}
+
+.legend {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Ventana de detalles */
+.detail-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-title small {
+  font-family: Consolas, 'Courier New', monospace;
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+.detail-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--azul-claro);
+  color: var(--azul);
+  display: grid;
+  place-items: center;
+}
+
+.detail-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.detail-list dt {
+  font-size: 12.5px;
+  color: var(--texto-suave);
+}
+
+.detail-list dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+  color: var(--azul-titulo);
+}
+
+.detail-subtitle {
+  font-size: 15px;
+  margin: 18px 0 6px;
+}
+
+.detail-text {
+  color: var(--texto);
+}
+
+.spaced {
+  margin-top: 16px;
+}
+
+/* En teléfonos, cada fila se muestra como una tarjeta */
+@media (max-width: 800px) {
+  .table-card {
+    padding: 0;
+  }
+
+  .tabla thead {
+    display: none;
+  }
+
+  .tabla,
+  .tabla tbody,
+  .tabla tr,
+  .tabla td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla tr {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .tabla td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    border: none;
+    text-align: right;
+  }
+
+  .tabla td::before {
+    content: attr(data-label);
+    font-size: 12.5px;
+    color: var(--texto-suave);
+    text-align: left;
+  }
+
+  .tabla td.actions {
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+
+  .tabla td.actions::before {
+    content: none;
+  }
+
+  .tabla tr.fila-vacia td {
+    display: block;
+    text-align: center;
+  }
+
+  .tabla tr.fila-vacia td::before {
+    content: none;
+  }
+
+  .detail-list {
+    grid-template-columns: 1fr;
+  }
+}

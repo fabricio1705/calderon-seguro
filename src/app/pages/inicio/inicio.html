@@ -1,0 +1,74 @@
+<!-- Bienvenida -->
+<section class="welcome">
+  <div class="welcome-text">
+    <span class="welcome-tag"><app-icon name="shield-check" [size]="16" /> Calderón Seguro</span>
+    <h1>¡Hola, {{ sesion.nombre() }}!</h1>
+    <p>Bienvenido a la plataforma de seguridad ciudadana de la parroquia Abdón Calderón. Juntos construimos una comunidad más segura.</p>
+    <div class="welcome-actions">
+      <a class="btn btn-white" routerLink="/reportar"><app-icon name="megaphone" [size]="18" /> Reportar incidente</a>
+      <a class="btn btn-ghost" routerLink="/mapa"><app-icon name="map" [size]="18" /> Ver mapa</a>
+    </div>
+  </div>
+  <div class="welcome-art" aria-hidden="true">
+    <app-icon name="shield-check" [size]="120" [stroke]="1.3" />
+  </div>
+</section>
+
+<!-- Tarjetas de resumen -->
+<section class="stats">
+  @for (s of resumen; track s.titulo) {
+    <div class="card stat">
+      <span class="stat-icon" [class]="s.color"><app-icon [name]="s.icono" [size]="22" /></span>
+      <div>
+        <p class="stat-title">{{ s.titulo }}</p>
+        <p class="stat-value">{{ s.valor }}</p>
+        <p class="stat-detail">{{ s.detalle ?? 'Sin registros aún' }}</p>
+      </div>
+    </div>
+  }
+</section>
+
+<div class="grid">
+  <!-- Reportes recientes -->
+  <section class="card panel">
+    <div class="panel-header">
+      <h2>Reportes recientes</h2>
+      <a routerLink="/mis-reportes" class="see-all">Ver todos <app-icon name="chevron-right" [size]="16" /></a>
+    </div>
+    <ul class="recent-list">
+      @for (r of recientes; track r.codigo) {
+        <li>
+          <span class="recent-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="20" /></span>
+          <div class="recent-info">
+            <strong>{{ r.categoria }}</strong>
+            <span>{{ r.ubicacion }} · {{ r.fecha }}</span>
+          </div>
+          <span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span>
+        </li>
+      } @empty {
+        <li class="empty-state">
+          <span class="empty-state-icon"><app-icon name="file-text" [size]="26" /></span>
+          <strong>Todavía no hay reportes registrados</strong>
+          <span>Cuando se registre un incidente, aparecerá en esta sección.</span>
+        </li>
+      }
+    </ul>
+    <p class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra reportes reales.</p>
+  </section>
+
+  <!-- Accesos rápidos -->
+  <section class="card panel">
+    <div class="panel-header">
+      <h2>Accesos rápidos</h2>
+    </div>
+    <div class="shortcuts">
+      @for (a of accesos; track a.ruta) {
+        <a class="shortcut" [routerLink]="a.ruta">
+          <span class="shortcut-icon"><app-icon [name]="a.icono" [size]="22" /></span>
+          <strong>{{ a.titulo }}</strong>
+          <span>{{ a.texto }}</span>
+        </a>
+      }
+    </div>
+  </section>
+</div>
