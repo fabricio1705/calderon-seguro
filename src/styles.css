@@ -9,7 +9,7 @@
   --fondo: #eef2f8;
   --blanco: #ffffff;
   --texto: #1e293b;
-  --texto-suave: #64748b;
+  --texto-suave: #475569; /* antes #64748b: sube el contraste a 6,7:1 sobre el fondo */
   --borde: #e2e8f0;
   --sombra: 0 1px 3px rgba(15, 37, 87, 0.06), 0 6px 20px rgba(15, 37, 87, 0.06);
   --radio: 14px;

@@ -40,9 +40,9 @@
 
     <div class="card list">
       <h3>Incidentes registrados</h3>
-      @for (r of reportes; track r.codigo) {
-        <button type="button" class="list-item" [class.active]="r.codigo === seleccionado()"
-          (click)="seleccionado.set(r.codigo)">
+      @for (r of reportes(); track r.id) {
+        <button type="button" class="list-item" [class.active]="r.id === reporteSeleccionado()?.id"
+          (click)="seleccionado.set(r.id)">
           <i [style.background]="colorEstado[r.estado]"></i>
           <span class="list-text">
             <strong>{{ r.categoria }}</strong>
@@ -59,6 +59,6 @@
       }
     </div>
 
-    <p class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra incidentes reales.</p>
+    <p class="demo-note"><app-icon name="info" [size]="16" /> El mapa es de referencia. La lista muestra los reportes de esta sesión de demostración.</p>
   </aside>
 </div>

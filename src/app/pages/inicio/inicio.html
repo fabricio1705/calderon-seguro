@@ -16,13 +16,13 @@
 
 <!-- Tarjetas de resumen -->
 <section class="stats">
-  @for (s of resumen; track s.titulo) {
+  @for (s of resumen(); track s.titulo) {
     <div class="card stat">
       <span class="stat-icon" [class]="s.color"><app-icon [name]="s.icono" [size]="22" /></span>
       <div>
         <p class="stat-title">{{ s.titulo }}</p>
         <p class="stat-value">{{ s.valor }}</p>
-        <p class="stat-detail">{{ s.detalle ?? 'Sin registros aún' }}</p>
+        <p class="stat-detail">{{ s.detalle }}</p>
       </div>
     </div>
   }
@@ -36,7 +36,7 @@
       <a routerLink="/mis-reportes" class="see-all">Ver todos <app-icon name="chevron-right" [size]="16" /></a>
     </div>
     <ul class="recent-list">
-      @for (r of recientes; track r.codigo) {
+      @for (r of recientes(); track r.id) {
         <li>
           <span class="recent-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="20" /></span>
           <div class="recent-info">
@@ -53,7 +53,7 @@
         </li>
       }
     </ul>
-    <p class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra reportes reales.</p>
+    <p class="demo-note"><app-icon name="info" [size]="16" /> Los reportes se guardan solo durante esta sesión de demostración.</p>
   </section>
 
   <!-- Accesos rápidos -->

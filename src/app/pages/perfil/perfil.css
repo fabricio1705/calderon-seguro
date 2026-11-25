@@ -113,6 +113,121 @@
   padding-left: 40px;
 }
 
+/* Reportes de la sesión */
+.reports-card {
+  grid-column: 1 / -1;
+  padding: 26px 28px;
+}
+
+.reports-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.reports-head h2 {
+  font-size: 18px;
+}
+
+.see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 260px));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.mini-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+.mini-stat strong {
+  display: block;
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--azul-titulo);
+}
+
+.mini-stat span {
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.mini-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.mini-icon.azul {
+  background: var(--azul-claro);
+  color: var(--azul);
+}
+
+.mini-icon.ambar {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.last-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.last-list li:not(.empty-state) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.last-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.last-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.last-info strong {
+  display: block;
+  color: var(--azul-titulo);
+}
+
+.last-info span {
+  display: block;
+  font-size: 14px;
+  color: var(--texto-suave);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 1000px) {
   .layout {
     grid-template-columns: 1fr;
@@ -124,7 +239,16 @@
     grid-template-columns: 1fr;
   }
 
-  .info-card {
+  .info-card,
+  .reports-card {
     padding: 20px;
+  }
+
+  .reports-head {
+    flex-direction: column;
+  }
+
+  .mini-stats {
+    grid-template-columns: 1fr 1fr;
   }
 }

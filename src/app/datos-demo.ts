@@ -1,23 +1,27 @@
-// Tipos y lista de reportes de la aplicación.
-// El prototipo inicia sin reportes registrados: la lista está vacía.
+// Tipos de los reportes de la aplicación.
+// Los reportes se crean durante la sesión y viven solo en memoria (ver reportes.service.ts).
 
 export type EstadoReporte = 'Pendiente' | 'En revisión' | 'Atendido' | 'Cerrado';
 
+export interface FotoReporte {
+  nombre: string;
+  url: string; // URL temporal del navegador (blob:); la imagen nunca sale del equipo
+}
+
 export interface ReporteDemo {
-  codigo: string;
+  id: string; // identificador interno único de la sesión
+  codigo: string; // identificador local de demostración (p. ej. DEMO-001), no es un código oficial
   categoria: string;
   icono: string;
-  fecha: string;
-  hora: string;
+  fecha: string; // fecha del incidente (dd/mm/aaaa)
+  hora: string; // hora del incidente (hh:mm)
   ubicacion: string;
   estado: EstadoReporte;
   descripcion: string;
-  // Posición del marcador en el mapa ilustrativo (coordenadas del dibujo SVG).
-  x: number;
-  y: number;
+  fotos: FotoReporte[];
+  usuario: string; // nombre con el que se inició la sesión
+  creado: Date; // momento en que se confirmó el reporte
 }
-
-export const REPORTES_DEMO: ReporteDemo[] = [];
 
 // Categorías de incidente. Cada una tiene un color propio para su icono
 // (color del trazo y un fondo suave del mismo tono).

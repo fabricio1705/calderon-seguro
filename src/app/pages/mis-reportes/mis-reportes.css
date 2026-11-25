@@ -39,6 +39,7 @@
 }
 
 .code {
+  white-space: nowrap;
   font-family: Consolas, 'Courier New', monospace;
   font-weight: 700;
   color: var(--azul-titulo);
@@ -146,6 +147,30 @@
   margin-top: 16px;
 }
 
+/* Resumen de la descripción (máximo dos líneas) */
+.desc span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 280px;
+  color: var(--texto);
+}
+
+.detail-photos {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detail-photos img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+}
+
 /* En teléfonos, cada fila se muestra como una tarjeta */
 @media (max-width: 800px) {
   .table-card {
@@ -184,6 +209,11 @@
     font-size: 12.5px;
     color: var(--texto-suave);
     text-align: left;
+  }
+
+  .desc span {
+    max-width: 65%;
+    text-align: right;
   }
 
   .tabla td.actions {

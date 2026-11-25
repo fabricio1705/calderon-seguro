@@ -48,4 +48,45 @@
 
     <p class="demo-note"><app-icon name="info" [size]="16" /> Usuario de prueba. No existe una cuenta ni un inicio de sesión real.</p>
   </section>
+
+  <!-- Reportes creados en esta sesión -->
+  <section class="card reports-card">
+    <div class="reports-head">
+      <div>
+        <h2>Mis reportes en esta sesión</h2>
+        <p class="subtitle">Se guardan temporalmente y se borran al cerrar sesión o recargar la página.</p>
+      </div>
+      <a class="see-all" routerLink="/mis-reportes">Ver todos <app-icon name="chevron-right" [size]="16" /></a>
+    </div>
+
+    <div class="mini-stats">
+      <div class="mini-stat">
+        <span class="mini-icon azul"><app-icon name="file-text" [size]="20" /></span>
+        <div><strong>{{ reportes.total() }}</strong><span>Reportes realizados</span></div>
+      </div>
+      <div class="mini-stat">
+        <span class="mini-icon ambar"><app-icon name="clock" [size]="20" /></span>
+        <div><strong>{{ reportes.pendientes() }}</strong><span>Pendientes</span></div>
+      </div>
+    </div>
+
+    <ul class="last-list">
+      @for (r of ultimos(); track r.id) {
+        <li>
+          <span class="last-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="18" /></span>
+          <div class="last-info">
+            <strong>{{ r.categoria }}</strong>
+            <span>{{ r.ubicacion }} · {{ r.fecha }} {{ r.hora }}</span>
+          </div>
+          <span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span>
+        </li>
+      } @empty {
+        <li class="empty-state">
+          <span class="empty-state-icon"><app-icon name="file-text" [size]="24" /></span>
+          <strong>Aún no has creado reportes en esta sesión</strong>
+          <a routerLink="/reportar">Reportar un incidente</a>
+        </li>
+      }
+    </ul>
+  </section>
 </div>

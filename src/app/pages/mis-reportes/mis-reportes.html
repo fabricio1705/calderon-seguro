@@ -13,8 +13,9 @@
   <table class="tabla">
     <thead>
       <tr>
-        <th>Código</th>
+        <th>ID local</th>
         <th>Categoría</th>
+        <th>Descripción</th>
         <th>Fecha</th>
         <th>Ubicación aproximada</th>
         <th>Estado</th>
@@ -22,12 +23,13 @@
       </tr>
     </thead>
     <tbody>
-      @for (r of reportes; track r.codigo) {
+      @for (r of reportes(); track r.id) {
         <tr>
           <td data-label="Código"><span class="code">{{ r.codigo }}</span></td>
           <td data-label="Categoría">
             <span class="category"><span class="category-icon" [style]="estiloCategoria(r.icono)"><app-icon [name]="r.icono" [size]="17" /></span>{{ r.categoria }}</span>
           </td>
+          <td data-label="Descripción" class="desc"><span>{{ r.descripcion }}</span></td>
           <td data-label="Fecha">{{ r.fecha }} <small>{{ r.hora }}</small></td>
           <td data-label="Ubicación">{{ r.ubicacion }}</td>
           <td data-label="Estado"><span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span></td>
@@ -39,7 +41,7 @@
         </tr>
       } @empty {
         <tr class="fila-vacia">
-          <td colspan="6">
+          <td colspan="7">
             <div class="empty-state">
               <span class="empty-state-icon"><app-icon name="file-text" [size]="26" /></span>
               <strong>Aún no has registrado reportes</strong>
@@ -52,7 +54,7 @@
   </table>
 
   <div class="table-footer">
-    <span class="demo-note"><app-icon name="info" [size]="16" /> Prototipo de demostración: esta versión no registra reportes reales.</span>
+    <span class="demo-note"><app-icon name="info" [size]="16" /> Los reportes se guardan solo durante esta sesión de demostración y se borran al cerrar sesión o recargar la página.</span>
     <span class="legend">
       <span class="badge badge-pendiente">Pendiente</span>
       <span class="badge badge-revision">En revisión</span>
@@ -80,16 +82,26 @@
       </div>
 
       <dl class="detail-list">
-        <div><dt>Estado ilustrativo</dt><dd><span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span></dd></div>
+        <div><dt>Estado</dt><dd><span class="badge" [class]="claseEstado[r.estado]">{{ r.estado }}</span></dd></div>
         <div><dt>Fecha y hora</dt><dd>{{ r.fecha }} · {{ r.hora }}</dd></div>
         <div><dt>Ubicación aproximada</dt><dd>{{ r.ubicacion }}</dd></div>
         <div><dt>Comunidad</dt><dd>Abdón Calderón, Portoviejo</dd></div>
+        <div><dt>Creado</dt><dd>{{ r.creado.toLocaleString('es-EC', { dateStyle: 'short', timeStyle: 'short' }) }}</dd></div>
       </dl>
 
       <h3 class="detail-subtitle">Descripción</h3>
       <p class="detail-text">{{ r.descripcion }}</p>
 
-      <p class="demo-note spaced"><app-icon name="info" [size]="16" /> Reporte de solo lectura. No puede modificarse en esta versión.</p>
+      @if (r.fotos.length > 0) {
+        <h3 class="detail-subtitle">Fotos ({{ r.fotos.length }})</h3>
+        <div class="detail-photos">
+          @for (f of r.fotos; track f.url) {
+            <img [src]="f.url" [alt]="f.nombre" />
+          }
+        </div>
+      }
+
+      <p class="demo-note spaced"><app-icon name="info" [size]="16" /> {{ r.codigo }} es un identificador local de demostración. El reporte no se envía a ninguna autoridad.</p>
 
       <div class="modal-actions">
         <button type="button" class="btn btn-primary" (click)="detalle.set(null)">Cerrar</button>
